@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +30,16 @@ public class ChatActivity extends AppCompatActivity {
     static final String USER_ID_KEY = "userId";
     static final String BODY_KEY = "body";
     static final int MAX_CHAT_MESSAGES_TO_SHOW = 50;
-
+    // Create a handler which can run code periodically
+    static final int POLL_INTERVAL = 1000; // milliseconds
+    Handler myHandler = new android.os.Handler();
+    Runnable mRefreshMessagesRunnable = new Runnable() {
+        @Override
+        public void run() {
+            refreshMessages();
+            myHandler.postDelayed(this, POLL_INTERVAL);
+        }
+    };
     EditText etMessage;
     Button btSend;
     RecyclerView rvChat;
@@ -49,6 +59,7 @@ public class ChatActivity extends AppCompatActivity {
         } else { // If not logged in, login as a new anonymous user
             login();
         }
+        myHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
     }
 
     // Get the userId from the cached currentUser object
