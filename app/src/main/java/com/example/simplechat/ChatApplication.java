@@ -1,6 +1,8 @@
-package com.example.simplechat.Application;
+package com.example.simplechat;
 
 import android.app.Application;
+
+import com.parse.Parse;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
